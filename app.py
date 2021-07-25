@@ -22,12 +22,24 @@ def webhook():
         get_failure_assets_json = get_failure_assets_result.json()
         count_failure_assets = get_failure_assets_json['pagination']['total_count']
 
+        get_ok_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=ok*', headers=request_headers)
+        get_ok_assets_json = get_ok_assets_result.json()
+        count_ok_assets = get_ok_assets_json['pagination']['total_count']
+
         get_maintenance_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=maintenance*', headers=request_headers)
         get_maintenance_assets_json = get_maintenance_assets_result.json()
         count_maintenance_assets = get_maintenance_assets_json['pagination']['total_count']
 
+        get_check_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=check*', headers=request_headers)
+        get_check_assets_json = get_check_assets_result.json()
+        count_check_assets = get_check_assets_json['pagination']['total_count']
 
-        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran ' + str(count_failure_assets) + ' en estado de Fallo y ' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido'
+        get_out_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=out*', headers=request_headers)
+        get_out_assets_json = get_out_assets_result.json()
+        count_out_assets = get_out_assets_json['pagination']['total_count']
+
+
+        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran ' + str(count_ok_assets) + ' en estado de ok ' + str(count_failure_assets) + ' en estado de Fallo '+ str(count_out_assets) + ' en estado de Fuera de Especificación ' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido y ' + str(count_check_assets) + ' en estado de Verificar Función '
 
         return make_response({
             "fulfillmentText": answer,
