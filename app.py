@@ -27,7 +27,7 @@ def webhook():
         count_maintenance_assets = get_maintenance_assets_json['pagination']['total_count']
 
 
-        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran' + str(count_failure_assets) + ' en estado de Fallo' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido'
+        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran ' + str(count_failure_assets) + ' en estado de Fallo y ' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido'
 
         return make_response({
             "fulfillmentText": answer,
