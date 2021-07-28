@@ -75,7 +75,7 @@ def webhook():
         get_lleno_FWR30_json = get_lleno_FWR30_result.json()
         lleno_FWR30 = get_lleno_FWR30_json['values'][0]['value']
 
-        get_bateria_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=baterry', headers=request_headers)
+        get_bateria_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=battery', headers=request_headers)
         get_bateria_FWR30_json = get_bateria_FWR30_result.json()
         bateria_FWR30 = get_bateria_FWR30_json['values'][0]['value']
 
