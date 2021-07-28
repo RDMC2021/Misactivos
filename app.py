@@ -63,9 +63,9 @@ def webhook():
         get_nivel_FWR30_json = get_nivel_FWR30_result.json()
         nivel_FWR30 = get_nivel_FWR30_json['values'][0]['value']
 
-        get_tiempo_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
-        get_tiempo_FWR30_json = get_tiempo_FWR30_result.json()
-        tiempo_FWR30 = get_tiempo_FWR30_json['values'][0]['timestamp']
+        #get_tiempo_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
+        #get_tiempo_FWR30_json = get_tiempo_FWR30_result.json()
+        #tiempo_FWR30 = get_tiempo_FWR30_json['values'][0]['timestamp']
 
         get_vacio_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=distance', headers=request_headers)
         get_vacio_FWR30_json = get_vacio_FWR30_result.json()
@@ -83,7 +83,7 @@ def webhook():
         get_temperatura_FWR30_json = get_temperatura_FWR30_result.json()
         temperatura_FWR30 = get_temperatura_FWR30_json['values'][0]['value']
 
-        answer = 'Los valores del FWR30 con registro de sello de hora ' + str(tiempo_FWR30) + ' son nivel ' + str(nivel_FWR30) + ' porciento distancia de vacio ' + str(vacio_FWR30) + 'milimetros distancia de lleno '+ str(lleno_FWR30) + 'milimetros vida util de la bateria ' + str(bateria_FWR30) + 'dias temperautura ' + str(temperatura_FWR30) + ' grados celcius '
+        answer = 'Los valores del FWR30 son nivel de ' + str(nivel_FWR30) + ' porciento distancia de vacio ' + str(vacio_FWR30) + 'milimetros distancia de lleno '+ str(lleno_FWR30) + 'milimetros vida util de la bateria ' + str(bateria_FWR30) + 'dias temperautura ' + str(temperatura_FWR30) + ' grados celcius '
         #answer = 'El nivel del Micropilot FWR30 es ' + str(nivel_FWR30) + ' porciento'
 
         return make_response({
