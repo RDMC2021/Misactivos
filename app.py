@@ -265,9 +265,14 @@ def webhook():
         })
 
     elif intent == 'EnvioPrimerEquipoFalla':
-        get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=ok*', headers=request_headers)
-        get_failure_assets_json = get_failure_assets_result.json()
-        asset_id = get_failure_assets_json['assets'][0]['id']
+        
+        get_lleno_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level_distance', headers=request_headers)
+        get_lleno_FWR30_json = get_lleno_FWR30_result.json()
+        lleno_FWR30 = get_lleno_FWR30_json['values'][0]['value']
+        
+        #get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=ok*', headers=request_headers)
+        #get_failure_assets_json = get_failure_assets_result.json()
+        #asset_id = get_failure_assets_json['assets'][0]['id']
 
         #get_cause_remedy_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/health_conditions?include=causes%2C%20causes.remedies'
         #get_cause_remedy_result = requests.get(get_cause_remedy_url, headers=request_headers)
@@ -283,7 +288,7 @@ def webhook():
 
         #answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
         
-        answer = 'Prueba de envio de mensaje de falla y recomendación' + asset_id
+        answer = 'Prueba de envio de mensaje de falla y recomendación' + lleno_FWR30
 
         #telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
         #telegram_chat_id = os.getenv('578540151')
