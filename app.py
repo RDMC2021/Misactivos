@@ -265,9 +265,9 @@ def webhook():
         })
 
     elif intent == 'EnvioPrimerEquipoFalla':
-        #get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
-        #get_failure_assets_json = get_failure_assets_result.json()
-        #asset_id = get_failure_assets_json['assets'][0]['id']
+        get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
+        get_failure_assets_json = get_failure_assets_result.json()
+        asset_id = get_failure_assets_json['assets'][0]['id']
 
         #get_cause_remedy_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/health_conditions?include=causes%2C%20causes.remedies'
         #get_cause_remedy_result = requests.get(get_cause_remedy_url, headers=request_headers)
@@ -283,7 +283,7 @@ def webhook():
 
         #answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
         
-        answer = 'Prueba de envio de mensaje de falla y recomendación'
+        answer = 'Prueba de envio de mensaje de falla y recomendación' + asset_id
 
         #telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
         #telegram_chat_id = os.getenv('578540151')
