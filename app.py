@@ -15,7 +15,7 @@ def webhook():
     intent = req["queryResult"]["intent"]["displayName"]
 
     if intent == 'MenudeTareas':
-        answer = '1 Estado general de activos. 2 Valores medidos del FWR30 en forma de lista. 3 Valores medidos de forma individual del FWR30 como Nivel, distancia de vacio, distancia de lleno, vida util de la bateria y temperatura. Ademas puedo notificar al grupo de mantenimiento que equipos estan en falla, su codigo y las acciones recomendadas al respecto. Que información de tus activos necesitas'
+        answer = 'Puedo brindarte el Estado general de activos. Los Valores medidos del FWR30 en forma de lista. Los Valores medidos de forma individual del FWR30 como Nivel, distancia de vacio, distancia de lleno, vida util de la bateria, temperatura y hora de la ultima conexión. Ademas puedo notificar al grupo de mantenimiento que equipos estan en falla, su codigo y las acciones recomendadas al respecto. Que información de tus activos necesitas'
 
         return make_response({
             "fulfillmentText": answer,
@@ -60,7 +60,7 @@ def webhook():
         count_out_assets = get_out_assets_json['pagination']['total_count']
 
 
-        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran ' + str(count_ok_assets) + ' en estado de ok ' + str(count_failure_assets) + ' en estado de Fallo '+ str(count_out_assets) + ' en estado de Fuera de Especificación ' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido y ' + str(count_check_assets) + ' en estado de Verificar Función '
+        answer = 'Actualmente hay ' + str(count_total_assets) + ' activos conectados. De los cuales se encuentran ' + str(count_ok_assets) + ' en estado de ok ' + str(count_failure_assets) + ' en estado de Fallo '+ str(count_out_assets) + ' en estado de Fuera de Especificación ' + str(count_maintenance_assets) + ' en estado de Mantenimiento Requerido y ' + str(count_check_assets) + ' en estado de Verificar Función. Requieres de algun otro dato'
 
         return make_response({
             "fulfillmentText": answer,
@@ -84,10 +84,6 @@ def webhook():
         get_nivel_FWR30_json = get_nivel_FWR30_result.json()
         nivel_FWR30 = get_nivel_FWR30_json['values'][0]['value']
 
-        #get_tiempo_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
-        #get_tiempo_FWR30_json = get_tiempo_FWR30_result.json()
-        #tiempo_FWR30 = get_tiempo_FWR30_json['values'][0]['timestamp']
-
         get_vacio_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=distance', headers=request_headers)
         get_vacio_FWR30_json = get_vacio_FWR30_result.json()
         vacio_FWR30 = get_vacio_FWR30_json['values'][0]['value']
@@ -105,7 +101,6 @@ def webhook():
         temperatura_FWR30 = get_temperatura_FWR30_json['values'][0]['value']
 
         answer = 'Los valores del FWR30 son nivel de ' + str(nivel_FWR30) + ' porciento distancia de vacio ' + str(vacio_FWR30) + 'milimetros distancia de lleno '+ str(lleno_FWR30) + 'milimetros vida util de la bateria ' + str(bateria_FWR30) + 'dias temperautura ' + str(temperatura_FWR30) + ' grados celcius. Que más puedo hacer por ti '
-        #answer = 'El nivel del Micropilot FWR30 es ' + str(nivel_FWR30) + ' porciento'
 
         return make_response({
             "fulfillmentText": answer,
@@ -124,6 +119,31 @@ def webhook():
             "source": "webhook"
         })
     
+    elif intent == 'TiempoFWR30':
+        get_tiempo_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
+        get_tiempo_FWR30_json = get_tiempo_FWR30_result.json()
+        tiempo_FWR30 = get_tiempo_FWR30_json['values'][0]['timestamp']
+
+        answer = 'La ultima conexion del FWR30 fue a las ' + str(tiempo_FWR30)
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+
+
     elif intent == 'NivelFWR30':
         get_nivel_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
         get_nivel_FWR30_json = get_nivel_FWR30_result.json()
