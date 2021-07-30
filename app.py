@@ -13,7 +13,28 @@ def webhook():
     request_headers = {'accept': 'application/json', 'Authorization': auth_header, 'Api-Key': api_key}
     req = request.get_json(silent=True, force=True)
     intent = req["queryResult"]["intent"]["displayName"]
-    if intent == 'ResumendeEstado':
+
+    if intent == 'MenudeTareas':
+        answer = '1 Estado general de activos. 2 Valores medidos del FWR30 en forma de lista. 3 Valores medidos de forma individual del FWR30 como Nivel, distancia de vacio, distancia de lleno, vida util de la bateria y temperatura. Ademas puedo notificar al grupo de mantenimiento que equipos estan en falla, su codigo y las acciones recomendadas al respecto. Que información de tus activos necesitas'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+
+    elif intent == 'ResumendeEstado':
         get_total_assets_result = requests.get('https://api.netilion.endress.com/v1/assets', headers=request_headers)
         get_total_assets_json = get_total_assets_result.json()
         count_total_assets = get_total_assets_json['pagination']['total_count']
@@ -103,6 +124,125 @@ def webhook():
             "source": "webhook"
         })
     
+     elif intent == 'NivelFWR30':
+        get_nivel_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level', headers=request_headers)
+        get_nivel_FWR30_json = get_nivel_FWR30_result.json()
+        nivel_FWR30 = get_nivel_FWR30_json['values'][0]['value']
+
+        answer = 'El nivel del FWR30 es de ' + str(nivel_FWR30) + ' porciento. Que otro dato necesitas'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+
+    elif intent == 'VacioFWR30':
+        get_vacio_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=distance', headers=request_headers)
+        get_vacio_FWR30_json = get_vacio_FWR30_result.json()
+        vacio_FWR30 = get_vacio_FWR30_json['values'][0]['value']
+
+        answer = 'La distancia de vacio del FWR30 es de ' + str(vacio_FWR30) + ' milimetros. Necesitas algun otro dato'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+    
+    elif intent == 'LlenoFWR30':
+        get_lleno_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=level_distance', headers=request_headers)
+        get_lleno_FWR30_json = get_lleno_FWR30_result.json()
+        lleno_FWR30 = get_lleno_FWR30_json['values'][0]['value']
+
+        answer = 'La distancia de lleno del FWR30 es de ' + str(lleno_FWR30) + ' milimetros. Necesitas algun otro dato'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+
+    elif intent == 'BateriaFWR30':
+        get_bateria_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=battery', headers=request_headers)
+        get_bateria_FWR30_json = get_bateria_FWR30_result.json()
+        bateria_FWR30 = get_bateria_FWR30_json['values'][0]['value']
+
+        answer = 'El tiempo de vida de la bateria del FWR30 es de ' + str(bateria_FWR30) + ' días. Requieres alguna otra información'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
+    
+    elif intent == 'TemperaturaFWR30':
+        get_temperatura_FWR30_result = requests.get('https://api.netilion.endress.com/v1/assets/88098/values?key=temperature', headers=request_headers)
+        get_temperatura_FWR30_json = get_temperatura_FWR30_result.json()
+        temperatura_FWR30 = get_temperatura_FWR30_json['values'][0]['value']
+
+        answer = 'La temperatura del FWR30 es de ' + str(bateria_FWR30) + ' grados celcius. Necesitas algun otro dato'
+
+        return make_response({
+            "fulfillmentText": answer,
+            "fulfillmentMessages": [
+                {
+                    "platform": "ACTIONS_ON_GOOGLE",
+                    "simpleResponses":{
+                        "simpleResponses": [
+                            {
+                                "textToSpeech": answer
+                            }
+                        ]
+                    }
+                }
+            ],
+            "source": "webhook"
+        })
 
     elif intent == 'EnvioPrimerEquipoFalla':
         get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
@@ -130,14 +270,14 @@ def webhook():
 
         if telegram_response.status_code == 200:
             return make_response({
-                "fulfillmentText": "mensaje de aviso enviado",
+                "fulfillmentText": "mensaje de aviso enviado. Necesitas de algo mas",
                 "fulfillmentMessages": [
                     {
                         "platform": "ACTIONS_ON_GOOGLE",
                         "simpleResponses":{
                             "simpleResponses": [
                                 {
-                                    "textToSpeech": "mensaje de envio enviado"
+                                    "textToSpeech": "mensaje de aviso enviado. Necesitas de algo mas"
                                 }
                             ]
                         }
