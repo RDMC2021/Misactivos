@@ -173,7 +173,7 @@ def webhook():
         get_vacio_FWR30_json = get_vacio_FWR30_result.json()
         vacio_FWR30 = get_vacio_FWR30_json['values'][0]['value']
 
-        answer = 'La distancia de vacío del FWR30 es de ' + str(vacio_FWR30) + ' milímetros. Necesitas algun otro dato'
+        answer = 'La distancia de vacío del FWR30 es de ' + str(vacio_FWR30) + ' milímetros. Necesitas algún otro dato'
 
         return make_response({
             "fulfillmentText": answer,
@@ -285,7 +285,7 @@ def webhook():
         
         answer = 'Prueba de envio de mensaje de falla + recomendación.'
 
-        #telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
+        telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
         telegram_chat_id = os.getenv('578540151')
         telegram_request_url = 'https://api.telegram.org/bot' + telegram_auth + '/sendMessage?chat_id=-' + telegram_chat_id + '&text=' + urllib.parse.quote(answer)
         telegram_response = requests.get(telegram_request_url)
