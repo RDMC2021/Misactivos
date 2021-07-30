@@ -283,8 +283,8 @@ def webhook():
 
         answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
         
-        telegram_auth = os.getenv('TELEGRAM_AUTH')
-        telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
+        telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
+        telegram_chat_id = os.getenv('-578540151')
         telegram_request_url = 'https://api.telegram.org/bot' + telegram_auth + '/sendMessage?chat_id=-' + telegram_chat_id + '&text=' + urllib.parse.quote(answer)
         telegram_response = requests.get(telegram_request_url)
 
