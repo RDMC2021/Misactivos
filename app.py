@@ -265,26 +265,28 @@ def webhook():
         })
 
     elif intent == 'EnvioPrimerEquipoFalla':
-        get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
-        get_failure_assets_json = get_failure_assets_result.json()
-        asset_id = get_failure_assets_json['assets'][0]['id']
+        #get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
+        #get_failure_assets_json = get_failure_assets_result.json()
+        #asset_id = get_failure_assets_json['assets'][0]['id']
 
-        get_cause_remedy_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/health_conditions?include=causes%2C%20causes.remedies'
-        get_cause_remedy_result = requests.get(get_cause_remedy_url, headers=request_headers)
-        get_cause_remedy_json = get_cause_remedy_result.json()
-        diagnosis_code = get_cause_remedy_json['health_conditions'][0]['diagnosis_code']
-        cause = get_cause_remedy_json['health_conditions'][0]['causes'][0]['description']
-        remedy = get_cause_remedy_json['health_conditions'][0]['causes'][0]['remedies'][0]['description']
+        #get_cause_remedy_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/health_conditions?include=causes%2C%20causes.remedies'
+        #get_cause_remedy_result = requests.get(get_cause_remedy_url, headers=request_headers)
+        #get_cause_remedy_json = get_cause_remedy_result.json()
+        #diagnosis_code = get_cause_remedy_json['health_conditions'][0]['diagnosis_code']
+        #cause = get_cause_remedy_json['health_conditions'][0]['causes'][0]['description']
+        #remedy = get_cause_remedy_json['health_conditions'][0]['causes'][0]['remedies'][0]['description']
 
-        get_asset_location_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/nodes'
-        get_asset_location_result = requests.get(get_asset_location_url, headers=request_headers)
-        get_asset_location_json = get_asset_location_result.json()
-        location = get_asset_location_json['nodes'][0]['name']
+        #get_asset_location_url = 'https://api.netilion.endress.com/v1/assets/' + str(asset_id) + '/nodes'
+        #get_asset_location_result = requests.get(get_asset_location_url, headers=request_headers)
+        #get_asset_location_json = get_asset_location_result.json()
+        #location = get_asset_location_json['nodes'][0]['name']
 
-        answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
+        #answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
         
-        telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
-        telegram_chat_id = os.getenv('-578540151')
+        answer = 'Prueba de envio de mensaje de falla + recomendación.'
+
+        #telegram_auth = os.getenv('1926677742:AAG8pcLseeX_rULshntzrqvYs7_D68de_5E')
+        telegram_chat_id = os.getenv('578540151')
         telegram_request_url = 'https://api.telegram.org/bot' + telegram_auth + '/sendMessage?chat_id=-' + telegram_chat_id + '&text=' + urllib.parse.quote(answer)
         telegram_response = requests.get(telegram_request_url)
 
