@@ -265,7 +265,7 @@ def webhook():
         })
 
     elif intent == 'EnvioPrimerEquipoFalla':
-        get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
+        get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=ok*', headers=request_headers)
         get_failure_assets_json = get_failure_assets_result.json()
         asset_id = get_failure_assets_json['assets'][0]['id']
 
