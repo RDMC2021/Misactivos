@@ -83,7 +83,7 @@ def webhook():
         get_temperatura_FWR30_json = get_temperatura_FWR30_result.json()
         temperatura_FWR30 = get_temperatura_FWR30_json['values'][0]['value']
 
-        answer = 'Los valores del FWR30 son nivel de ' + str(nivel_FWR30) + ' porciento distancia de vacio ' + str(vacio_FWR30) + 'milimetros distancia de lleno '+ str(lleno_FWR30) + 'milimetros vida util de la bateria ' + str(bateria_FWR30) + 'dias temperautura ' + str(temperatura_FWR30) + ' grados celcius '
+        answer = 'Los valores del FWR30 son nivel de ' + str(nivel_FWR30) + ' porciento distancia de vacio ' + str(vacio_FWR30) + 'milimetros distancia de lleno '+ str(lleno_FWR30) + 'milimetros vida util de la bateria ' + str(bateria_FWR30) + 'dias temperautura ' + str(temperatura_FWR30) + ' grados celcius. Que más puedo hacer por ti '
         #answer = 'El nivel del Micropilot FWR30 es ' + str(nivel_FWR30) + ' porciento'
 
         return make_response({
@@ -104,7 +104,7 @@ def webhook():
         })
     
 
-    elif intent == 'ForwardFirstFailureStatusCauseAndRemedy':
+    elif intent == 'EnvioPrimerEquipoFalla':
         get_failure_assets_result = requests.get('https://api.netilion.endress.com/v1/assets?status_code=failure*', headers=request_headers)
         get_failure_assets_json = get_failure_assets_result.json()
         asset_id = get_failure_assets_json['assets'][0]['id']
@@ -121,7 +121,7 @@ def webhook():
         get_asset_location_json = get_asset_location_result.json()
         location = get_asset_location_json['nodes'][0]['name']
 
-        answer = 'An asset in location ' + location + ' reads diagnostic code ' + diagnosis_code + '. The cause is: ' + cause + '. The recommendation is: ' +remedy
+        answer = 'Un activo ubicado en ' + location + ' muestra el codigo de diagnostico ' + diagnosis_code + '. Esto es causado por: ' + cause + '. Se recomienda lo siguiente: ' +remedy
         
         telegram_auth = os.getenv('TELEGRAM_AUTH')
         telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
@@ -130,14 +130,14 @@ def webhook():
 
         if telegram_response.status_code == 200:
             return make_response({
-                "fulfillmentText": "message was sent out",
+                "fulfillmentText": "mensaje de aviso enviado",
                 "fulfillmentMessages": [
                     {
                         "platform": "ACTIONS_ON_GOOGLE",
                         "simpleResponses":{
                             "simpleResponses": [
                                 {
-                                    "textToSpeech": "message was sent out"
+                                    "textToSpeech": "mensaje de envio enviado"
                                 }
                             ]
                         }
@@ -147,14 +147,14 @@ def webhook():
             })
         else:
             return make_response({
-                "fulfillmentText": "message could not be sent",
+                "fulfillmentText": "el mensaje no pudo ser enviado",
                 "fulfillmentMessages": [
                     {
                         "platform": "ACTIONS_ON_GOOGLE",
                         "simpleResponses":{
                             "simpleResponses": [
                                 {
-                                    "textToSpeech": "message could not be sent"
+                                    "textToSpeech": "el mensaje no pudo ser enviado"
                                 }
                             ]
                         }
